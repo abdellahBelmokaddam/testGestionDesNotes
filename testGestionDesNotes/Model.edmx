@@ -1,0 +1,624 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="gestion_exmen2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="contient">
+          <Key>
+            <PropertyRef Name="idMatiere" />
+            <PropertyRef Name="idFiliere" />
+          </Key>
+          <Property Name="idMatiere" Type="int" Nullable="false" />
+          <Property Name="idFiliere" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="etudiant">
+          <Key>
+            <PropertyRef Name="idEtudiant" />
+          </Key>
+          <Property Name="idEtudiant" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nomEtudiant" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="prenomEtudiant" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="examen">
+          <Key>
+            <PropertyRef Name="idExamen" />
+          </Key>
+          <Property Name="idExamen" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CC1" Type="float" />
+          <Property Name="CC2" Type="float" />
+          <Property Name="CC3" Type="float" />
+          <Property Name="Moyenne" Type="float" />
+          <Property Name="observation" Type="varchar(max)" />
+          <Property Name="idMatiere" Type="int" />
+          <Property Name="Moy_National" Type="float" />
+          <Property Name="Moy_Regional" Type="float" />
+          <Property Name="CC4" Type="float" />
+          <Property Name="idinscrit" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="filiere">
+          <Key>
+            <PropertyRef Name="idFiliere" />
+          </Key>
+          <Property Name="idFiliere" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nomFiliere" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="groupe">
+          <Key>
+            <PropertyRef Name="idGroupe" />
+          </Key>
+          <Property Name="idGroupe" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nomGroupe" Type="varchar(max)" Nullable="false" />
+          <Property Name="idNiveau" Type="int" />
+          <Property Name="idFiliere" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="inscrit">
+          <Key>
+            <PropertyRef Name="idInscrit" />
+          </Key>
+          <Property Name="idEtudiant" Type="int" Nullable="false" />
+          <Property Name="idGroupe" Type="int" Nullable="false" />
+          <Property Name="dateInscription" Type="date" Nullable="false" />
+          <Property Name="idInscrit" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="matiere">
+          <Key>
+            <PropertyRef Name="idMatiere" />
+          </Key>
+          <Property Name="idMatiere" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="coef" Type="int" Nullable="false" />
+          <Property Name="nomMatiere" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="niveau">
+          <Key>
+            <PropertyRef Name="idNiveau" />
+          </Key>
+          <Property Name="idNiveau" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeNiveau" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_contient_filiere">
+          <End Role="filiere" Type="Self.filiere" Multiplicity="1" />
+          <End Role="contient" Type="Self.contient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="filiere">
+              <PropertyRef Name="idFiliere" />
+            </Principal>
+            <Dependent Role="contient">
+              <PropertyRef Name="idFiliere" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_contient_Matiere">
+          <End Role="matiere" Type="Self.matiere" Multiplicity="1" />
+          <End Role="contient" Type="Self.contient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="matiere">
+              <PropertyRef Name="idMatiere" />
+            </Principal>
+            <Dependent Role="contient">
+              <PropertyRef Name="idMatiere" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_examen_inscrit">
+          <End Role="inscrit" Type="Self.inscrit" Multiplicity="1" />
+          <End Role="examen" Type="Self.examen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="inscrit">
+              <PropertyRef Name="idInscrit" />
+            </Principal>
+            <Dependent Role="examen">
+              <PropertyRef Name="idinscrit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_examen_matiere">
+          <End Role="matiere" Type="Self.matiere" Multiplicity="0..1" />
+          <End Role="examen" Type="Self.examen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="matiere">
+              <PropertyRef Name="idMatiere" />
+            </Principal>
+            <Dependent Role="examen">
+              <PropertyRef Name="idMatiere" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_groupe_filiere">
+          <End Role="filiere" Type="Self.filiere" Multiplicity="1" />
+          <End Role="groupe" Type="Self.groupe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="filiere">
+              <PropertyRef Name="idFiliere" />
+            </Principal>
+            <Dependent Role="groupe">
+              <PropertyRef Name="idFiliere" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_groupe_Niveau">
+          <End Role="niveau" Type="Self.niveau" Multiplicity="0..1" />
+          <End Role="groupe" Type="Self.groupe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="niveau">
+              <PropertyRef Name="idNiveau" />
+            </Principal>
+            <Dependent Role="groupe">
+              <PropertyRef Name="idNiveau" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_inscrit_etudiant">
+          <End Role="etudiant" Type="Self.etudiant" Multiplicity="1" />
+          <End Role="inscrit" Type="Self.inscrit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="etudiant">
+              <PropertyRef Name="idEtudiant" />
+            </Principal>
+            <Dependent Role="inscrit">
+              <PropertyRef Name="idEtudiant" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_inscrit_Groupe">
+          <End Role="groupe" Type="Self.groupe" Multiplicity="1" />
+          <End Role="inscrit" Type="Self.inscrit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groupe">
+              <PropertyRef Name="idGroupe" />
+            </Principal>
+            <Dependent Role="inscrit">
+              <PropertyRef Name="idGroupe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="af" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idM" Type="int" Mode="In" />
+          <Parameter Name="idG" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Affiche" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idMat" Type="int" Mode="In" />
+        </Function>
+        <Function Name="afficheEx" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idM" Type="int" Mode="In" />
+          <Parameter Name="idG" Type="int" Mode="In" />
+        </Function>
+        <Function Name="afficheEx2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="thebest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idF" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="gestion_exmen2ModelStoreContainer">
+          <EntitySet Name="contient" EntityType="Self.contient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="etudiant" EntityType="Self.etudiant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="examen" EntityType="Self.examen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="filiere" EntityType="Self.filiere" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="groupe" EntityType="Self.groupe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="inscrit" EntityType="Self.inscrit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="matiere" EntityType="Self.matiere" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="niveau" EntityType="Self.niveau" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_contient_filiere" Association="Self.fk_contient_filiere">
+            <End Role="filiere" EntitySet="filiere" />
+            <End Role="contient" EntitySet="contient" />
+          </AssociationSet>
+          <AssociationSet Name="fk_contient_Matiere" Association="Self.fk_contient_Matiere">
+            <End Role="matiere" EntitySet="matiere" />
+            <End Role="contient" EntitySet="contient" />
+          </AssociationSet>
+          <AssociationSet Name="fk_examen_inscrit" Association="Self.fk_examen_inscrit">
+            <End Role="inscrit" EntitySet="inscrit" />
+            <End Role="examen" EntitySet="examen" />
+          </AssociationSet>
+          <AssociationSet Name="fk_examen_matiere" Association="Self.fk_examen_matiere">
+            <End Role="matiere" EntitySet="matiere" />
+            <End Role="examen" EntitySet="examen" />
+          </AssociationSet>
+          <AssociationSet Name="fk_groupe_filiere" Association="Self.fk_groupe_filiere">
+            <End Role="filiere" EntitySet="filiere" />
+            <End Role="groupe" EntitySet="groupe" />
+          </AssociationSet>
+          <AssociationSet Name="fk_groupe_Niveau" Association="Self.fk_groupe_Niveau">
+            <End Role="niveau" EntitySet="niveau" />
+            <End Role="groupe" EntitySet="groupe" />
+          </AssociationSet>
+          <AssociationSet Name="fk_inscrit_etudiant" Association="Self.fk_inscrit_etudiant">
+            <End Role="etudiant" EntitySet="etudiant" />
+            <End Role="inscrit" EntitySet="inscrit" />
+          </AssociationSet>
+          <AssociationSet Name="fk_inscrit_Groupe" Association="Self.fk_inscrit_Groupe">
+            <End Role="groupe" EntitySet="groupe" />
+            <End Role="inscrit" EntitySet="inscrit" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="gestion_exmen2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="etudiant">
+          <Key>
+            <PropertyRef Name="idEtudiant" />
+          </Key>
+          <Property Name="idEtudiant" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nomEtudiant" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="prenomEtudiant" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="inscrit" Relationship="Self.fk_inscrit_etudiant" FromRole="etudiant" ToRole="inscrit" />
+        </EntityType>
+        <EntityType Name="examen">
+          <Key>
+            <PropertyRef Name="idExamen" />
+          </Key>
+          <Property Name="idExamen" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CC1" Type="Double" />
+          <Property Name="CC2" Type="Double" />
+          <Property Name="CC3" Type="Double" />
+          <Property Name="Moyenne" Type="Double" />
+          <Property Name="observation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="idMatiere" Type="Int32" />
+          <Property Name="Moy_National" Type="Double" />
+          <Property Name="Moy_Regional" Type="Double" />
+          <Property Name="CC4" Type="Double" />
+          <Property Name="idinscrit" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="inscrit" Relationship="Self.fk_examen_inscrit" FromRole="examen" ToRole="inscrit" />
+          <NavigationProperty Name="matiere" Relationship="Self.fk_examen_matiere" FromRole="examen" ToRole="matiere" />
+        </EntityType>
+        <EntityType Name="filiere">
+          <Key>
+            <PropertyRef Name="idFiliere" />
+          </Key>
+          <Property Name="idFiliere" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nomFiliere" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="groupe" Relationship="Self.fk_groupe_filiere" FromRole="filiere" ToRole="groupe" />
+          <NavigationProperty Name="matiere" Relationship="Self.contient" FromRole="filiere" ToRole="matiere" />
+        </EntityType>
+        <EntityType Name="groupe">
+          <Key>
+            <PropertyRef Name="idGroupe" />
+          </Key>
+          <Property Name="idGroupe" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nomGroupe" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idNiveau" Type="Int32" />
+          <Property Name="idFiliere" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="filiere" Relationship="Self.fk_groupe_filiere" FromRole="groupe" ToRole="filiere" />
+          <NavigationProperty Name="niveau" Relationship="Self.fk_groupe_Niveau" FromRole="groupe" ToRole="niveau" />
+          <NavigationProperty Name="inscrit" Relationship="Self.fk_inscrit_Groupe" FromRole="groupe" ToRole="inscrit" />
+        </EntityType>
+        <EntityType Name="inscrit">
+          <Key>
+            <PropertyRef Name="idInscrit" />
+          </Key>
+          <Property Name="idEtudiant" Type="Int32" Nullable="false" />
+          <Property Name="idGroupe" Type="Int32" Nullable="false" />
+          <Property Name="dateInscription" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="idInscrit" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="etudiant" Relationship="Self.fk_inscrit_etudiant" FromRole="inscrit" ToRole="etudiant" />
+          <NavigationProperty Name="examen" Relationship="Self.fk_examen_inscrit" FromRole="inscrit" ToRole="examen" />
+          <NavigationProperty Name="groupe" Relationship="Self.fk_inscrit_Groupe" FromRole="inscrit" ToRole="groupe" />
+        </EntityType>
+        <EntityType Name="matiere">
+          <Key>
+            <PropertyRef Name="idMatiere" />
+          </Key>
+          <Property Name="idMatiere" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="coef" Type="Int32" Nullable="false" />
+          <Property Name="nomMatiere" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="examen" Relationship="Self.fk_examen_matiere" FromRole="matiere" ToRole="examen" />
+          <NavigationProperty Name="filiere" Relationship="Self.contient" FromRole="matiere" ToRole="filiere" />
+        </EntityType>
+        <EntityType Name="niveau">
+          <Key>
+            <PropertyRef Name="idNiveau" />
+          </Key>
+          <Property Name="idNiveau" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeNiveau" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="groupe" Relationship="Self.fk_groupe_Niveau" FromRole="niveau" ToRole="groupe" />
+        </EntityType>
+        <Association Name="fk_inscrit_etudiant">
+          <End Role="etudiant" Type="Self.etudiant" Multiplicity="1" />
+          <End Role="inscrit" Type="Self.inscrit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="etudiant">
+              <PropertyRef Name="idEtudiant" />
+            </Principal>
+            <Dependent Role="inscrit">
+              <PropertyRef Name="idEtudiant" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_examen_inscrit">
+          <End Role="inscrit" Type="Self.inscrit" Multiplicity="1" />
+          <End Role="examen" Type="Self.examen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="inscrit">
+              <PropertyRef Name="idInscrit" />
+            </Principal>
+            <Dependent Role="examen">
+              <PropertyRef Name="idinscrit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_examen_matiere">
+          <End Role="matiere" Type="Self.matiere" Multiplicity="0..1" />
+          <End Role="examen" Type="Self.examen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="matiere">
+              <PropertyRef Name="idMatiere" />
+            </Principal>
+            <Dependent Role="examen">
+              <PropertyRef Name="idMatiere" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_groupe_filiere">
+          <End Role="filiere" Type="Self.filiere" Multiplicity="1" />
+          <End Role="groupe" Type="Self.groupe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="filiere">
+              <PropertyRef Name="idFiliere" />
+            </Principal>
+            <Dependent Role="groupe">
+              <PropertyRef Name="idFiliere" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_groupe_Niveau">
+          <End Role="niveau" Type="Self.niveau" Multiplicity="0..1" />
+          <End Role="groupe" Type="Self.groupe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="niveau">
+              <PropertyRef Name="idNiveau" />
+            </Principal>
+            <Dependent Role="groupe">
+              <PropertyRef Name="idNiveau" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_inscrit_Groupe">
+          <End Role="groupe" Type="Self.groupe" Multiplicity="1" />
+          <End Role="inscrit" Type="Self.inscrit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groupe">
+              <PropertyRef Name="idGroupe" />
+            </Principal>
+            <Dependent Role="inscrit">
+              <PropertyRef Name="idGroupe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="contient">
+          <End Role="filiere" Type="Self.filiere" Multiplicity="*" />
+          <End Role="matiere" Type="Self.matiere" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="gestion_exmen" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="etudiant" EntityType="Self.etudiant" />
+          <EntitySet Name="examen" EntityType="Self.examen" />
+          <EntitySet Name="filiere" EntityType="Self.filiere" />
+          <EntitySet Name="groupe" EntityType="Self.groupe" />
+          <EntitySet Name="inscrit" EntityType="Self.inscrit" />
+          <EntitySet Name="matiere" EntityType="Self.matiere" />
+          <EntitySet Name="niveau" EntityType="Self.niveau" />
+          <AssociationSet Name="fk_inscrit_etudiant" Association="Self.fk_inscrit_etudiant">
+            <End Role="etudiant" EntitySet="etudiant" />
+            <End Role="inscrit" EntitySet="inscrit" />
+          </AssociationSet>
+          <AssociationSet Name="fk_examen_inscrit" Association="Self.fk_examen_inscrit">
+            <End Role="inscrit" EntitySet="inscrit" />
+            <End Role="examen" EntitySet="examen" />
+          </AssociationSet>
+          <AssociationSet Name="fk_examen_matiere" Association="Self.fk_examen_matiere">
+            <End Role="matiere" EntitySet="matiere" />
+            <End Role="examen" EntitySet="examen" />
+          </AssociationSet>
+          <AssociationSet Name="fk_groupe_filiere" Association="Self.fk_groupe_filiere">
+            <End Role="filiere" EntitySet="filiere" />
+            <End Role="groupe" EntitySet="groupe" />
+          </AssociationSet>
+          <AssociationSet Name="fk_groupe_Niveau" Association="Self.fk_groupe_Niveau">
+            <End Role="niveau" EntitySet="niveau" />
+            <End Role="groupe" EntitySet="groupe" />
+          </AssociationSet>
+          <AssociationSet Name="fk_inscrit_Groupe" Association="Self.fk_inscrit_Groupe">
+            <End Role="groupe" EntitySet="groupe" />
+            <End Role="inscrit" EntitySet="inscrit" />
+          </AssociationSet>
+          <AssociationSet Name="contient" Association="Self.contient">
+            <End Role="filiere" EntitySet="filiere" />
+            <End Role="matiere" EntitySet="matiere" />
+          </AssociationSet>
+          <FunctionImport Name="af" ReturnType="Collection(gestion_exmen2Model.af_Result)">
+            <Parameter Name="idM" Mode="In" Type="Int32" />
+            <Parameter Name="idG" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Affiche">
+            <Parameter Name="idMat" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="afficheEx" ReturnType="Collection(gestion_exmen2Model.afficheEx_Result)">
+            <Parameter Name="idM" Mode="In" Type="Int32" />
+            <Parameter Name="idG" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="afficheEx2" ReturnType="Collection(gestion_exmen2Model.afficheEx2_Result)" />
+          <FunctionImport Name="thebest">
+            <Parameter Name="idF" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="af_Result">
+          <Property Type="Int32" Name="idinscrit" Nullable="false" />
+          <Property Type="String" Name="nomEtudiant" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="prenomEtudiant" Nullable="false" MaxLength="20" />
+          <Property Type="Double" Name="CC1" Nullable="true" />
+          <Property Type="Double" Name="CC2" Nullable="true" />
+          <Property Type="Double" Name="CC3" Nullable="true" />
+          <Property Type="Double" Name="CC4" Nullable="true" />
+          <Property Type="Double" Name="Moyenne" Nullable="true" />
+          <Property Type="String" Name="observation" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="afficheEx_Result">
+          <Property Type="Int32" Name="idInscrit" Nullable="false" />
+          <Property Type="String" Name="nomEtudiant" Nullable="false" MaxLength="20" />
+          <Property Type="Double" Name="CC1" Nullable="true" />
+          <Property Type="Double" Name="CC2" Nullable="true" />
+          <Property Type="Double" Name="CC3" Nullable="true" />
+          <Property Type="Double" Name="CC4" Nullable="true" />
+          <Property Type="Double" Name="Moyenne" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="afficheEx2_Result">
+          <Property Type="Int32" Name="idInscrit" Nullable="false" />
+          <Property Type="String" Name="nomEtudiant" Nullable="false" MaxLength="20" />
+          <Property Type="Double" Name="CC1" Nullable="true" />
+          <Property Type="Double" Name="CC2" Nullable="true" />
+          <Property Type="Double" Name="CC3" Nullable="true" />
+          <Property Type="Double" Name="CC4" Nullable="true" />
+          <Property Type="Double" Name="Moyenne" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="gestion_exmen2ModelStoreContainer" CdmEntityContainer="gestion_exmen">
+          <EntitySetMapping Name="etudiant">
+            <EntityTypeMapping TypeName="gestion_exmen2Model.etudiant">
+              <MappingFragment StoreEntitySet="etudiant">
+                <ScalarProperty Name="idEtudiant" ColumnName="idEtudiant" />
+                <ScalarProperty Name="nomEtudiant" ColumnName="nomEtudiant" />
+                <ScalarProperty Name="prenomEtudiant" ColumnName="prenomEtudiant" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="examen">
+            <EntityTypeMapping TypeName="gestion_exmen2Model.examen">
+              <MappingFragment StoreEntitySet="examen">
+                <ScalarProperty Name="idExamen" ColumnName="idExamen" />
+                <ScalarProperty Name="CC1" ColumnName="CC1" />
+                <ScalarProperty Name="CC2" ColumnName="CC2" />
+                <ScalarProperty Name="CC3" ColumnName="CC3" />
+                <ScalarProperty Name="Moyenne" ColumnName="Moyenne" />
+                <ScalarProperty Name="observation" ColumnName="observation" />
+                <ScalarProperty Name="idMatiere" ColumnName="idMatiere" />
+                <ScalarProperty Name="Moy_National" ColumnName="Moy_National" />
+                <ScalarProperty Name="Moy_Regional" ColumnName="Moy_Regional" />
+                <ScalarProperty Name="CC4" ColumnName="CC4" />
+                <ScalarProperty Name="idinscrit" ColumnName="idinscrit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="filiere">
+            <EntityTypeMapping TypeName="gestion_exmen2Model.filiere">
+              <MappingFragment StoreEntitySet="filiere">
+                <ScalarProperty Name="idFiliere" ColumnName="idFiliere" />
+                <ScalarProperty Name="nomFiliere" ColumnName="nomFiliere" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="groupe">
+            <EntityTypeMapping TypeName="gestion_exmen2Model.groupe">
+              <MappingFragment StoreEntitySet="groupe">
+                <ScalarProperty Name="idGroupe" ColumnName="idGroupe" />
+                <ScalarProperty Name="nomGroupe" ColumnName="nomGroupe" />
+                <ScalarProperty Name="idNiveau" ColumnName="idNiveau" />
+                <ScalarProperty Name="idFiliere" ColumnName="idFiliere" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="inscrit">
+            <EntityTypeMapping TypeName="gestion_exmen2Model.inscrit">
+              <MappingFragment StoreEntitySet="inscrit">
+                <ScalarProperty Name="idEtudiant" ColumnName="idEtudiant" />
+                <ScalarProperty Name="idGroupe" ColumnName="idGroupe" />
+                <ScalarProperty Name="dateInscription" ColumnName="dateInscription" />
+                <ScalarProperty Name="idInscrit" ColumnName="idInscrit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="matiere">
+            <EntityTypeMapping TypeName="gestion_exmen2Model.matiere">
+              <MappingFragment StoreEntitySet="matiere">
+                <ScalarProperty Name="idMatiere" ColumnName="idMatiere" />
+                <ScalarProperty Name="coef" ColumnName="coef" />
+                <ScalarProperty Name="nomMatiere" ColumnName="nomMatiere" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="niveau">
+            <EntityTypeMapping TypeName="gestion_exmen2Model.niveau">
+              <MappingFragment StoreEntitySet="niveau">
+                <ScalarProperty Name="idNiveau" ColumnName="idNiveau" />
+                <ScalarProperty Name="TypeNiveau" ColumnName="TypeNiveau" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="contient" TypeName="gestion_exmen2Model.contient" StoreEntitySet="contient">
+            <EndProperty Name="filiere">
+              <ScalarProperty Name="idFiliere" ColumnName="idFiliere" />
+            </EndProperty>
+            <EndProperty Name="matiere">
+              <ScalarProperty Name="idMatiere" ColumnName="idMatiere" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="af" FunctionName="gestion_exmen2Model.Store.af">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="gestion_exmen2Model.af_Result">
+                <ScalarProperty Name="idinscrit" ColumnName="idinscrit" />
+                <ScalarProperty Name="nomEtudiant" ColumnName="nomEtudiant" />
+                <ScalarProperty Name="prenomEtudiant" ColumnName="prenomEtudiant" />
+                <ScalarProperty Name="CC1" ColumnName="CC1" />
+                <ScalarProperty Name="CC2" ColumnName="CC2" />
+                <ScalarProperty Name="CC3" ColumnName="CC3" />
+                <ScalarProperty Name="CC4" ColumnName="CC4" />
+                <ScalarProperty Name="Moyenne" ColumnName="Moyenne" />
+                <ScalarProperty Name="observation" ColumnName="observation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Affiche" FunctionName="gestion_exmen2Model.Store.Affiche" />
+          <FunctionImportMapping FunctionImportName="afficheEx" FunctionName="gestion_exmen2Model.Store.afficheEx">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="gestion_exmen2Model.afficheEx_Result">
+                <ScalarProperty Name="idInscrit" ColumnName="idInscrit" />
+                <ScalarProperty Name="nomEtudiant" ColumnName="nomEtudiant" />
+                <ScalarProperty Name="CC1" ColumnName="CC1" />
+                <ScalarProperty Name="CC2" ColumnName="CC2" />
+                <ScalarProperty Name="CC3" ColumnName="CC3" />
+                <ScalarProperty Name="CC4" ColumnName="CC4" />
+                <ScalarProperty Name="Moyenne" ColumnName="Moyenne" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="afficheEx2" FunctionName="gestion_exmen2Model.Store.afficheEx2">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="gestion_exmen2Model.afficheEx2_Result">
+                <ScalarProperty Name="idInscrit" ColumnName="idInscrit" />
+                <ScalarProperty Name="nomEtudiant" ColumnName="nomEtudiant" />
+                <ScalarProperty Name="CC1" ColumnName="CC1" />
+                <ScalarProperty Name="CC2" ColumnName="CC2" />
+                <ScalarProperty Name="CC3" ColumnName="CC3" />
+                <ScalarProperty Name="CC4" ColumnName="CC4" />
+                <ScalarProperty Name="Moyenne" ColumnName="Moyenne" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="thebest" FunctionName="gestion_exmen2Model.Store.thebest" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

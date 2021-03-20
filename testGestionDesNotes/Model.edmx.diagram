@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="398c4d2d5d65413eb727236ca7cd94f3" Name="Diagram1">
+        <EntityTypeShape EntityType="gestion_exmen2Model.etudiant" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_exmen2Model.examen" Width="1.5" PointX="7.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_exmen2Model.filiere" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_exmen2Model.groupe" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_exmen2Model.inscrit" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_exmen2Model.matiere" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="gestion_exmen2Model.niveau" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="gestion_exmen2Model.fk_inscrit_etudiant" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_exmen2Model.fk_examen_inscrit" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_exmen2Model.fk_examen_matiere" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_exmen2Model.fk_groupe_filiere" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_exmen2Model.fk_groupe_Niveau" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_exmen2Model.fk_inscrit_Groupe" ManuallyRouted="false" />
+        <AssociationConnector Association="gestion_exmen2Model.contient" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
